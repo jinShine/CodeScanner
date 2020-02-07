@@ -11,14 +11,17 @@ import CodeScanner
 
 class ViewController: UIViewController {
 
-  lazy var codeScanner = CodeScanner(self.view, scannerType: .qrCode)
+  @IBOutlet weak var scanView: UIView!
+
+  var codeScanner: CodeScanner?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    codeScanner.overlayView?.focusView!.scanLineBorder(with: UIColor.green, lienWidth: 2)
-//    codeScanner.focusView.scanLineBorder(with: .green, lienWidth: 2)
-    codeScanner.avManager?.captureSession.startRunning()
+    codeScanner = CodeScanner(scanView, scannerType: .qrCode)
+
+//    codeScanner.overlayView?.focusView!.scanLineBorder(with: UIColor.green, lienWidth: 2)
+    codeScanner?.startScanning()
 
   }
 
