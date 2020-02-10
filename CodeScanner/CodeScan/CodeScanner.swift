@@ -66,7 +66,6 @@ public class CodeScanner: NSObject {
     }, completion: nil)
   }
   
-  
   public func startScanning() {
     avManager.resultHandler = { [weak self] object, error in
       guard let self = self else { return }
@@ -82,6 +81,7 @@ public class CodeScanner: NSObject {
         self.delegate?.codeScanner(self, didOutput: object.stringValue, bounds: transformedObject?.bounds, scannerType: self.scannerType)
       }
     }
+    
     avManager.captureSession.startRunning()
   }
   
@@ -91,6 +91,20 @@ public class CodeScanner: NSObject {
   
   public func cameraPosition(_ position: AVCaptureDevice.Position) {
     avManager.cameraPosition = position
+  }
+  
+  public func autoTrackingAnimation(bounds: CGRect, completion: ((Bool) -> Void)?) {
+    guard !showOverlayView else { return }
+    
+    UIView.animate(withDuration: 0.5, animations: { [weak self] in
+      switch self?.scannerType {
+      case .qrCode:
+        self?.focusView?.frame = bounds
+      case .barCode:
+        self?.focusView?.frame = CGRect(x: bounds.minX, y: bounds.midY, width: bounds.width, height: bounds.width / 3)
+      case .none: fatalError()
+      }
+    }, completion: completion)
   }
   
 }

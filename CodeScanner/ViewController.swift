@@ -20,43 +20,36 @@ class ViewController: UIViewController {
     codeScanner = CodeScanner(view, scannerType: .qrCode)
     codeScanner?.delegate = self
 
-//    codeScanner.cameraPosition(.front)
     codeScanner?.showOverlayView = false
-    codeScanner?.focusView?.scanLineBorder(with: .white, lineWidth: 3)
-//    codeScanner?.focusView?.scanLineBorder(with: CGRect(x: 0, y: 0, width: 200, height: 200), color: .white, lineWidth: 5)
     
-//    codeScanner?.focusView?.scanLineImage(corner: UIImage(named: "FocusType_1"))
+    codeScanner?.focusView?.scanLineBorder(with: .white, lineWidth: 3)
+    // codeScanner.cameraPosition(.front)
+    
+     
+    
+    // codeScanner?.focusView?.scanLineImage(corner: UIImage(named: "FocusType_1"))
+    
+    // codeScanner?.focusView?.scanLineImage(leftTop: UIImage(named: "ScanQR1_16x16_"), rightTop: UIImage(named: "ScanQR2_16x16_"), leftBottom: UIImage(named: "ScanQR3_16x16_"), rightBottom: UIImage(named: "ScanQR4_16x16_"))
 
+    // codeScanner.removeOverlay()
+    
+    // codeScanner?.stopScanning()
+    
     codeScanner?.startScanning()
-//    codeScanner.startScanning()
-//    codeScanner.focusView?.scanLineImage(corner: <#T##UIImage?#>)
-
-//    codeScanner.removeOverlay()
-//    codeScanner.focusView.scanLineBorder(with: .green, lienWidth: 4)
-
-//    codeScanner.focusView?.scanLineImage(corner: UIImage(named: "FocusType_1"))
-
-//    codeScanner?.focusView?.scanLineImage(leftTop: UIImage(named: "ScanQR1_16x16_"), rightTop: UIImage(named: "ScanQR2_16x16_"), leftBottom: UIImage(named: "ScanQR3_16x16_"), rightBottom: UIImage(named: "ScanQR4_16x16_"))
-//    codeScanner.focusView.scanLineImage(corner: UIImage(named: "FocusType_1"))
-
-//        focusView.scanLineBorder(with: .green, lienWidth: 4)
-    //    focusView.scanLineImage(corner: UIImage(named: "focus"))
-    //    focusView.scanLineImage(leftTop: UIImage(named: "ScanQR1_16x16_"), rightTop: UIImage(named: "ScanQR2_16x16_"), leftBottom: UIImage(named: "ScanQR3_16x16_"), rightBottom: UIImage(named: "ScanQR4_16x16_"))
-
+    
   }
 }
 
 extension ViewController: CodeScannerDelegate {
   func codeScanner(_ codeScanner: CodeScanner, didOutput value: String?, bounds: CGRect?, scannerType: ScannerType) {
 
-    
     if value != nil {
-      codeScanner.focusView?.scanLineBorder(with: .white, lineWidth: 3)
-      UIView.animate(withDuration: 0.75, animations: {
-        codeScanner.focusView?.frame = bounds ?? .zero
-      }, completion: { _ in
+      guard
+        let value = value,
+        let bounds = bounds else { return }
+      codeScanner.autoTrackingAnimation(bounds: bounds) { _ in
 //        codeScanner.stopScanning()
-      })
+      }
     }
   }
 }
