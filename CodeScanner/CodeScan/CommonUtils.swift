@@ -20,7 +20,7 @@ func focusSize(_ view: UIView, scannerType: ScannerType) -> CGSize {
   case .phone:
     switch scannerType {
     case .qrCode:
-      let width = view.bounds.width * 0.6
+      let width = view.bounds.width * 0.5
       size = CGSize(width: width, height: width)
       return size
     case .barCode:

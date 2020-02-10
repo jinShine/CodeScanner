@@ -17,13 +17,15 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    codeScanner = CodeScanner(codeView, scannerType: .qrCode)
+    codeScanner = CodeScanner(view, scannerType: .qrCode)
     codeScanner?.delegate = self
 
 //    codeScanner.cameraPosition(.front)
-//    codeScanner?.showOverlayView = false
-    codeScanner?.focusView?.scanLineBorder(with: .green, lineWidth: 4)
+    codeScanner?.showOverlayView = false
+    codeScanner?.focusView?.scanLineBorder(with: .white, lineWidth: 3)
 //    codeScanner?.focusView?.scanLineBorder(with: CGRect(x: 0, y: 0, width: 200, height: 200), color: .white, lineWidth: 5)
+    
+//    codeScanner?.focusView?.scanLineImage(corner: UIImage(named: "FocusType_1"))
 
     codeScanner?.startScanning()
 //    codeScanner.startScanning()
@@ -34,7 +36,7 @@ class ViewController: UIViewController {
 
 //    codeScanner.focusView?.scanLineImage(corner: UIImage(named: "FocusType_1"))
 
-//    codeScanner.focusView.scanLineImage(leftTop: UIImage(name'd: "ScanQR1_16x16_"), rightTop: UIImage(named: "ScanQR2_16x16_"), leftBottom: UIImage(named: "ScanQR3_16x16_"), rightBottom: UIImage(named: "ScanQR4_16x16_"))
+//    codeScanner?.focusView?.scanLineImage(leftTop: UIImage(named: "ScanQR1_16x16_"), rightTop: UIImage(named: "ScanQR2_16x16_"), leftBottom: UIImage(named: "ScanQR3_16x16_"), rightBottom: UIImage(named: "ScanQR4_16x16_"))
 //    codeScanner.focusView.scanLineImage(corner: UIImage(named: "FocusType_1"))
 
 //        focusView.scanLineBorder(with: .green, lienWidth: 4)
@@ -47,16 +49,13 @@ class ViewController: UIViewController {
 extension ViewController: CodeScannerDelegate {
   func codeScanner(_ codeScanner: CodeScanner, didOutput value: String?, bounds: CGRect?, scannerType: ScannerType) {
 
+    
     if value != nil {
-//      codeScanner.stopScanning()
-      codeScanner.focusView?.scanLineBorder(with: bounds ?? .zero, color: .white, lineWidth: 5)
+      codeScanner.focusView?.scanLineBorder(with: .white, lineWidth: 3)
       UIView.animate(withDuration: 0.75, animations: {
-        self.view.layoutIfNeeded()
+        codeScanner.focusView?.frame = bounds ?? .zero
       }, completion: { _ in
-//        UIView.animate(withDuration: 1.0, delay: 0, options: [], animations: {},
-//                       completion: { _ in
-//          codeScanner.stopScanning()
-//        })
+//        codeScanner.stopScanning()
       })
     }
   }
