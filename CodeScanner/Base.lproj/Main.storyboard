@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -10,34 +11,31 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CodeScannerExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CodeScanner" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Hk-G6-Mc5">
-                                <rect key="frame" x="57" y="298" width="300" height="300"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="2Og-1w-tB5"/>
-                                    <constraint firstAttribute="width" constant="300" id="3yB-ui-15n"/>
-                                </constraints>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ea2-g9-yy6">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="1Hk-G6-Mc5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LG7-dO-LO0"/>
-                            <constraint firstItem="1Hk-G6-Mc5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="cXO-Il-KdI"/>
+                            <constraint firstItem="ea2-g9-yy6" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="725-h8-gvK"/>
+                            <constraint firstAttribute="bottom" secondItem="ea2-g9-yy6" secondAttribute="bottom" id="KSn-Yk-zVu"/>
+                            <constraint firstAttribute="trailing" secondItem="ea2-g9-yy6" secondAttribute="trailing" id="Um5-QK-f3U"/>
+                            <constraint firstItem="ea2-g9-yy6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="tvp-Mr-hjD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="scanView" destination="1Hk-G6-Mc5" id="WFH-RY-08a"/>
+                        <outlet property="codeView" destination="ea2-g9-yy6" id="Jx1-oQ-SwG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="139"/>
+            <point key="canvasLocation" x="139" y="94"/>
         </scene>
     </scenes>
 </document>
