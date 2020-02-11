@@ -66,6 +66,12 @@ public class CodeScanner: NSObject {
     }, completion: nil)
   }
   
+  public func updateFrame() {
+    self.overlayView = OverlayView(frame: containerView.frame, scannerType: scannerType)
+    self.avManager = AVManager(containerView: containerView, scannerType: scannerType)
+    setupScanner()
+  }
+  
   public func startScanning() {
     avManager.resultHandler = { [weak self] object, error in
       guard let self = self else { return }

@@ -17,12 +17,11 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    codeScanner = CodeScanner(view, scannerType: .qrCode)
+    codeScanner = CodeScanner(codeView, scannerType: .qrCode)
     codeScanner?.delegate = self
-
     codeScanner?.showOverlayView = false
     
-    codeScanner?.focusView?.scanLineBorder(with: .white, lineWidth: 3)
+    
     // codeScanner.cameraPosition(.front)
     
      
@@ -34,9 +33,35 @@ class ViewController: UIViewController {
     // codeScanner.removeOverlay()
     
     // codeScanner?.stopScanning()
+    print("codeViewFrame: ", codeView.frame)
+    print("codeViewFrame: ", codeView.bounds)
     
     codeScanner?.startScanning()
     
+  }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+    codeScanner?.updateFrame()
+    
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    print("viewDidAppear codeViewFrame: ", codeView.frame)
+    print("viewDidAppear codeViewFrame: ", codeView.bounds)
+  
+    
+    
+//    codeScanner = CodeScanner(codeView, scannerType: .qrCode)
+//    codeScanner?.delegate = self
+//
+//    codeScanner?.showOverlayView = false
+//
+//    codeScanner?.focusView?.scanLineBorder(with: .white, lineWidth: 3)
+//
+//    codeScanner?.startScanning()
   }
 }
 
