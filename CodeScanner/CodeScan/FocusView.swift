@@ -31,7 +31,7 @@ public class FocusView: UIImageView {
 extension FocusView {
   
   // Line Draw with UIBezierPath
-  public func scanLineBorder(with color: UIColor, lineWidth: CGFloat) {
+  public func scanLineBorder(color: UIColor, lineWidth: CGFloat) {
     leftTopLayer.removeFromSuperlayer()
     rightTopLayer.removeFromSuperlayer()
     leftBottomLayer.removeFromSuperlayer()
@@ -109,13 +109,13 @@ extension FocusView {
   
   // Image of FocusView
   public func scanLineImage(corner: UIImage?) {
-    let focusFrame = CGRect(x: -5, y: -5, width: bounds.width + 10, height: bounds.height + 10)
+    let focusFrame = CGRect(x: -5, y: -5, width: self.bounds.width + 10, height: self.bounds.height + 10)
     let cornerImageView = UIImageView(frame: focusFrame)
     cornerImageView.image = corner
     cornerImageView.contentMode = .scaleToFill
     cornerImageView.backgroundColor = UIColor.clear
-    addSubview(cornerImageView)
-    bringSubviewToFront(cornerImageView)
+    self.addSubview(cornerImageView)
+    self.bringSubviewToFront(cornerImageView)
   }
 }
 

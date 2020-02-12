@@ -27,7 +27,7 @@ public class OverlayView: UIView {
 
 extension OverlayView {
   
-  private func setupOverlayView() {
+  func setupOverlayView() {
     let size = focusSize(self, scannerType: scannerType)
     focusView = FocusView(frame: CGRect(
       x: center.x - (size.width / 2),
@@ -37,7 +37,7 @@ extension OverlayView {
     addSubview(focusView)
   }
   
-  private func addMask() {
+  func addMask() {
     backgroundColor = UIColor.black.withAlphaComponent(0.4)
     mask(withRect: focusView.frame, inverse: true)
   }
