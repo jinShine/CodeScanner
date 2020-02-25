@@ -11,6 +11,6 @@ import AVFoundation
 
 public protocol CodeScannerDelegate: class {
 
-  func codeScanner(_ codeScanner: CodeScanner,
-                   didOutput value: String?, bounds: CGRect?, scannerType: ScannerType)
+  func codeScanner(_ codeScanner: CodeScanner, didOutput value: String?, scannerType: ScannerType)
+  func codeScanner(_ codeScanner: CodeScanner, didFail error: CodeScannerError, scannerType: ScannerType)
 }

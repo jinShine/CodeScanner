@@ -16,10 +16,10 @@ class AVManager: NSObject {
   var captureInput: AVCaptureDeviceInput!
   var captureOutput: AVCaptureMetadataOutput!
   var cameraPosition: AVCaptureDevice.Position = .back {
-    didSet { refresh() }
+    didSet { setupCamera() }
   }
-  var cameraFlashMode: AVCaptureDevice.FlashMode = .off {
-    didSet { refresh() }
+  var cameraFlashMode: AVCaptureDevice.TorchMode = .off {
+    didSet { setupCamera() }
   }
   weak var delegate: CodeScannerDelegate?
   
@@ -33,14 +33,37 @@ class AVManager: NSObject {
     self.scannerType = scannerType
     super.init()
     
-    setupCamera()
     setupVideoPreviewLayer()
+    authorization()
   }
   
   private func setupCamera() {
+    removeAllInput()
+    removeAllOutput()
+    
     cameraDevice {
       cameraInput(device: $0)
       cameraOutput()
+      cameraTorch(device: $0)
+    }
+  }
+  
+  private func authorization() {
+    switch AVCaptureDevice.authorizationStatus(for: .video) {
+    case .authorized:
+      setupCamera()
+    case .notDetermined:
+      AVCaptureDevice.requestAccess(for: .video) { granted in
+        if granted {
+          self.setupCamera()
+          return
+        }
+        self.resultHandler?(nil, .permissionDenied)
+      }
+    case .denied, .restricted:
+      resultHandler?(nil, .permissionDenied)
+    default:
+      fatalError("unknow")
     }
   }
   
@@ -54,8 +77,22 @@ class AVManager: NSObject {
         resultHandler?(nil, CodeScannerError.notSupported)
         return
     }
-    
+
     completion(captureDevice)
+  }
+  
+  private func cameraTorch(device: AVCaptureDevice) {
+    do {
+      if device.hasTorch {
+        try device.lockForConfiguration()
+        try device.setTorchModeOn(level: AVCaptureDevice.maxAvailableTorchLevel)
+        device.torchMode = cameraFlashMode
+        device.unlockForConfiguration()
+      }
+    } catch {
+      print("Torch could not be used")
+      resultHandler?(nil, CodeScannerError.notAvailableFlash)
+    }
   }
   
   private func cameraInput(device: AVCaptureDevice) {
@@ -64,7 +101,7 @@ class AVManager: NSObject {
       captureSession.addInput(captureInput)
     } catch {
       print("Failed to input CaptureSession")
-      resultHandler?(nil, CodeScannerError.inputError)
+      resultHandler?(nil, CodeScannerError.cameraInput)
     }
   }
   
@@ -75,7 +112,9 @@ class AVManager: NSObject {
     
     switch scannerType {
     case .qrCode:
-      captureOutput.metadataObjectTypes = [.qr]
+      captureOutput.metadataObjectTypes = [
+        .qr
+      ]
     case .barCode:
       captureOutput.metadataObjectTypes = [
         .upce,
@@ -110,12 +149,6 @@ class AVManager: NSObject {
     if let outputs = captureSession.outputs as? [AVCaptureMetadataOutput] {
       outputs.forEach { captureSession.removeOutput($0) }
     }
-  }
-  
-  private func refresh() {
-    removeAllInput()
-    removeAllOutput()
-    setupCamera()
   }
   
 }

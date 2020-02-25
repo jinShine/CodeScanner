@@ -11,5 +11,6 @@ import Foundation
 //MARK:- Scanner type
 
 public enum ScannerType {
-  case qrCode, barCode
+  case qrCode,
+  barCode
 }

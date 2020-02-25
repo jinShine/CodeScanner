@@ -72,70 +72,23 @@ public class CodeScanner: NSObject {
     }, completion: nil)
   }
   
-  public func updateFrame() {
-//    self.overlayView.removeFromSuperview()
-//    self.focusView?.removeFromSuperview()
-
-//    self.overlayView = OverlayView(frame: containerView.frame, scannerType: scannerType)
-//    setupScanner()
-//    self.avManager = AVManager(containerView: containerView, scannerType: scannerType)
-
-    self.overlayView.frame = containerView.frame
-//    self.overlayView.setupOverlayView()
-//    self.overlayView.addMask()
-
-    let size = focusSize(containerView, scannerType: scannerType)
-    print("#1", self.focusView?.frame)
-    self.focusView?.frame = CGRect(
-    x: containerView.center.x - (size.width / 2),
-    y: containerView.center.y - (size.height / 2),
-    width: size.width,
-    height: size.height)
-    print("#2", self.focusView?.frame)
-    overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-    overlayView.mask(withRect: focusView!.frame, inverse: true)
-
-    bounceAnimation()
-//    self.overlayView.addMask()
-
-//    self.focusView?.frame = CGRect(
-//    x: containerView.center.x,
-//    y: containerView.center.y,
-//    width: 50,
-//    height: 50)
-
-//    self.focusView?.setNeedsDisplay()
-
-
-
-//    self.focusView?.setNeedsLayout()
-//    self.focusView?.layoutIfNeeded()
-
-//    self.overlayView.frame = .zero
-//    self.focusView?.removeFromSuperview()
-//    setupScanner()
-
-//    if !showOverlayView {
-//      removeOverlay()
-//    }
-  }
-  
-  public func startScanning() {
+  private func resultHandler() {
     avManager.resultHandler = { [weak self] object, error in
       guard let self = self else { return }
-      
-      if error != nil  {
-        print(error)
-        //error delegate
+    
+      if let error = error {
+        self.delegate?.codeScanner(self, didFail: error, scannerType: self.scannerType)
         return
       }
       
       if let object = object {
-        let transformedObject = self.avManager.videoPreviewLayer.transformedMetadataObject(for: object)
-        self.delegate?.codeScanner(self, didOutput: object.stringValue, bounds: transformedObject?.bounds, scannerType: self.scannerType)
+        self.delegate?.codeScanner(self, didOutput: object.stringValue, scannerType: self.scannerType)
       }
     }
-    
+  }
+ 
+  public func startScanning() {
+    resultHandler()
     avManager.captureSession.startRunning()
   }
   
@@ -147,19 +100,7 @@ public class CodeScanner: NSObject {
     avManager.cameraPosition = position
   }
   
-  public func autoTrackingAnimation(bounds: CGRect, completion: ((Bool) -> Void)?) {
-    guard !showOverlayView else { return }
-
-
-    UIView.animate(withDuration: 0.5, animations: { [weak self] in
-      switch self?.scannerType {
-      case .qrCode:
-        self?.focusView?.frame = bounds
-      case .barCode:
-        self?.focusView?.frame = CGRect(x: bounds.minX, y: bounds.midY, width: bounds.width, height: bounds.width / 3)
-      case .none: fatalError()
-      }
-    }, completion: completion)
+  public func cameraFlash(_ mode: AVCaptureDevice.TorchMode) {
+    avManager.cameraFlashMode = mode
   }
-  
 }
